@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+    <!--1.将spring MVC加载进配置文件-->
+    <!--开启spring MVC注解模式：（1）自动注册 （2）可以提供数据格式化-->
+    <mvc:annotation-driven/>
+    <!--加载静态资源-->
+    <mvc:default-servlet-handler/>
+
+    <!--<mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>-->
+    <!--<mvc:default-servlet-handler/>-->
+
+    <!--    <mvc:resources mapping="/styles/**" location="/static_resources/css/"/>   -->
+    <!--        <mvc:resources mapping="/images/**"  -->
+    <!--        location="/static_resources/images/"/>   -->
+    <!--        <mvc:default-servlet-handler />   -->
+
+
+    <!--获取视图解析器   页面解析部分，找jsp页面-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--指明解析什么类型的页面-->
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <!--去前缀-->
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+
+        <!--去尾缀-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--4.页面之间的动作有controller层产生-->
+    <context:component-scan base-package="com.sjp.controller"/>
+
+</beans>

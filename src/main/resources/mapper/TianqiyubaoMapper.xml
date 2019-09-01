@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--一个dao对应一个mapper-->
+<mapper namespace="com.sjp.dao.Tianqiyubaodao">
+
+    <!--1.实现全查天气-->
+    <select id="findByAll" resultMap="tianqiyubaoResultMap">
+        select * from tb_tianqiyubao
+    </select>
+
+    <!--2.实现查找时间-->
+    <select id="findByTime" parameterType="Time" resultMap="tianqiyubaoResultMap">
+        select * from tb_tianqiyubao where year=#{year} and month=#{month} and day=#{day}
+    </select>
+
+
+    <resultMap id="tianqiyubaoResultMap" type="tianqiyubao">
+        <id property="sid" column="sid"/>
+        <result property="city" column="city"/>
+        <result property="time" column="time"/>
+        <result property="tianqi" column="tianqi"/>
+        <result property="windy" column="windy"/>
+        <result property="wd_max" column="wd_max"/>
+        <result property="wd_min" column="wd_min"/>
+        <result property="jd" column="jd"/>
+        <result property="wd" column="wd"/>
+        <result property="feng" column="feng"/>
+        <result property="jibie" column="jibie"/>
+        <result property="year" column="year"/>
+        <result property="month" column="month"/>
+        <result property="day" column="day"/>
+        <result property="pred" column="pred" />
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--1.获取db.properties文件，获取参数-->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!--2.获取datasource数据源对象-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <!-- 2.1-->
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <!-- 2.2优化连接池参数-->
+        <property name="maxPoolSize" value="30"/>  <!--最大访问数-->
+        <property name="minPoolSize" value="10"/>  <!--最小访问数-->
+
+        <!-- 关闭数据库连接后不自动提交-->
+        <property name="autoCommitOnClose" value="false"/>
+        <property name="checkoutTimeout" value="10000"/>      <!-- 10秒后报连接错误-->
+        <property name="acquireRetryAttempts" value="3"/>
+    </bean>
+
+    <!-- 3.整合Mybatis: 获取sqlSessionFactory对象-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 3.1注入数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 3.2获取mybatis的配置文件：mybatis.config.xml-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!-- 3.3扫描包，使用别名-->
+        <property name="typeAliasesPackage" value="com.sjp.pojo"/>
+        <!-- 3.4获取mapper文件-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+    </bean>
+
+    <!-- 4.tianqiyubaodao对象-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.sjp.dao"/>
+    </bean>
+
+</beans>
